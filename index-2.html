@@ -1,0 +1,902 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>🌙 Salami Wheel – Pick Your Eid Salami!</title>
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@400;600;800&family=Noto+Serif+Bengali:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --gold: #FFD700;
+    --deep-gold: #B8860B;
+    --emerald: #00897B;
+    --ruby: #C0392B;
+    --sapphire: #1565C0;
+    --bg-dark: #0A0A1A;
+    --cream: #FFF8E7;
+    --glow: 0 0 30px rgba(255,215,0,0.6);
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    min-height: 100vh;
+    background: var(--bg-dark);
+    background-image:
+      radial-gradient(ellipse at 20% 20%, rgba(0,137,123,0.15) 0%, transparent 50%),
+      radial-gradient(ellipse at 80% 80%, rgba(192,57,43,0.15) 0%, transparent 50%),
+      radial-gradient(ellipse at 50% 50%, rgba(21,101,192,0.10) 0%, transparent 70%);
+    font-family: 'Baloo 2', cursive;
+    color: var(--cream);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    overflow-x: hidden;
+    padding-bottom: 40px;
+  }
+
+  /* Stars background */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image:
+      radial-gradient(1px 1px at 10% 15%, rgba(255,255,255,0.6) 0%, transparent 100%),
+      radial-gradient(1px 1px at 25% 40%, rgba(255,255,255,0.4) 0%, transparent 100%),
+      radial-gradient(1px 1px at 60% 10%, rgba(255,255,255,0.7) 0%, transparent 100%),
+      radial-gradient(1px 1px at 75% 30%, rgba(255,255,255,0.3) 0%, transparent 100%),
+      radial-gradient(1px 1px at 90% 60%, rgba(255,255,255,0.5) 0%, transparent 100%),
+      radial-gradient(1px 1px at 40% 70%, rgba(255,255,255,0.4) 0%, transparent 100%),
+      radial-gradient(1px 1px at 85% 85%, rgba(255,255,255,0.6) 0%, transparent 100%),
+      radial-gradient(1px 1px at 15% 90%, rgba(255,255,255,0.3) 0%, transparent 100%),
+      radial-gradient(1px 1px at 50% 50%, rgba(255,255,255,0.2) 0%, transparent 100%),
+      radial-gradient(2px 2px at 30% 20%, rgba(255,215,0,0.4) 0%, transparent 100%),
+      radial-gradient(2px 2px at 70% 75%, rgba(255,215,0,0.3) 0%, transparent 100%);
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  /* Header */
+  header {
+    width: 100%;
+    max-width: 700px;
+    text-align: center;
+    padding: 40px 20px 10px;
+    position: relative;
+    z-index: 1;
+  }
+
+  .eid-badge {
+    display: inline-block;
+    background: linear-gradient(135deg, var(--emerald), #004D40);
+    border: 2px solid var(--gold);
+    border-radius: 50px;
+    padding: 6px 22px;
+    font-size: 0.75rem;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 16px;
+    box-shadow: var(--glow);
+    animation: pulse-badge 2s ease-in-out infinite;
+  }
+
+  @keyframes pulse-badge {
+    0%, 100% { box-shadow: 0 0 20px rgba(255,215,0,0.4); }
+    50% { box-shadow: 0 0 40px rgba(255,215,0,0.8); }
+  }
+
+  h1 {
+    font-size: clamp(2.2rem, 7vw, 3.8rem);
+    font-weight: 800;
+    line-height: 1.1;
+    background: linear-gradient(135deg, #FFD700 0%, #FFA500 40%, #FFD700 70%, #FFFACD 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    text-shadow: none;
+    filter: drop-shadow(0 0 20px rgba(255,165,0,0.5));
+    margin-bottom: 10px;
+  }
+
+  .subtitle {
+    font-size: 1.1rem;
+    color: rgba(255,248,231,0.75);
+    margin-bottom: 8px;
+  }
+
+  /* Decorative crescent */
+  .crescent {
+    font-size: 3rem;
+    animation: float 3s ease-in-out infinite;
+    display: block;
+    margin-bottom: 8px;
+  }
+
+  @keyframes float {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-10px); }
+  }
+
+  /* Ornamental divider */
+  .divider {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin: 18px auto;
+    width: 80%;
+    max-width: 400px;
+  }
+  .divider-line {
+    flex: 1;
+    height: 1px;
+    background: linear-gradient(to right, transparent, var(--gold), transparent);
+  }
+  .divider-diamond {
+    width: 8px; height: 8px;
+    background: var(--gold);
+    transform: rotate(45deg);
+    box-shadow: var(--glow);
+  }
+
+  /* Wheel container */
+  .wheel-section {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    z-index: 1;
+    padding: 10px 20px;
+  }
+
+  .wheel-wrapper {
+    position: relative;
+    width: min(90vw, 420px);
+    height: min(90vw, 420px);
+  }
+
+  /* Outer glow ring */
+  .wheel-wrapper::before {
+    content: '';
+    position: absolute;
+    inset: -12px;
+    border-radius: 50%;
+    background: conic-gradient(
+      #C0392B, #E67E22, #F1C40F, #27AE60, #2980B9, #8E44AD,
+      #C0392B, #E67E22, #F1C40F, #27AE60, #2980B9, #8E44AD, #C0392B
+    );
+    animation: spin-ring 12s linear infinite;
+    filter: blur(6px);
+    opacity: 0.6;
+    z-index: -1;
+  }
+
+  .wheel-wrapper::after {
+    content: '';
+    position: absolute;
+    inset: -6px;
+    border-radius: 50%;
+    border: 3px solid var(--gold);
+    box-shadow: 0 0 30px rgba(255,215,0,0.5), inset 0 0 30px rgba(255,215,0,0.1);
+  }
+
+  @keyframes spin-ring {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+  }
+
+  canvas#wheelCanvas {
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    position: relative;
+    z-index: 1;
+    cursor: pointer;
+    filter: drop-shadow(0 10px 40px rgba(0,0,0,0.6));
+    transition: filter 0.3s;
+  }
+
+  canvas#wheelCanvas:hover {
+    filter: drop-shadow(0 10px 60px rgba(255,215,0,0.4));
+  }
+
+  /* Pointer / Arrow */
+  .pointer {
+    position: absolute;
+    right: -8px;
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 10;
+    width: 0;
+    height: 0;
+    border-top: 22px solid transparent;
+    border-bottom: 22px solid transparent;
+    border-right: 46px solid var(--gold);
+    filter: drop-shadow(0 0 12px rgba(255,215,0,0.9));
+    animation: pointer-pulse 1.5s ease-in-out infinite;
+  }
+
+  .pointer::after {
+    content: '';
+    position: absolute;
+    right: -50px;
+    top: -16px;
+    width: 0;
+    height: 0;
+    border-top: 16px solid transparent;
+    border-bottom: 16px solid transparent;
+    border-right: 36px solid rgba(255,165,0,0.4);
+  }
+
+  @keyframes pointer-pulse {
+    0%, 100% { filter: drop-shadow(0 0 8px rgba(255,215,0,0.7)); }
+    50% { filter: drop-shadow(0 0 20px rgba(255,215,0,1)); }
+  }
+
+  /* Center hub */
+  .center-hub {
+    position: absolute;
+    top: 50%; left: 50%;
+    transform: translate(-50%, -50%);
+    width: 70px; height: 70px;
+    border-radius: 50%;
+    background: radial-gradient(circle at 35% 35%, #FFE566, #B8860B);
+    border: 4px solid #fff;
+    box-shadow: 0 0 20px rgba(255,215,0,0.8), 0 0 0 4px rgba(255,215,0,0.3);
+    z-index: 5;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.8rem;
+    animation: hub-glow 2s ease-in-out infinite;
+    cursor: pointer;
+    user-select: none;
+    transition: transform 0.15s;
+  }
+
+  .center-hub:active {
+    transform: translate(-50%, -50%) scale(0.95);
+  }
+
+  @keyframes hub-glow {
+    0%, 100% { box-shadow: 0 0 20px rgba(255,215,0,0.8), 0 0 0 4px rgba(255,215,0,0.3); }
+    50% { box-shadow: 0 0 40px rgba(255,215,0,1), 0 0 0 8px rgba(255,215,0,0.5); }
+  }
+
+  /* Spin button */
+  .spin-btn {
+    margin-top: 30px;
+    padding: 18px 60px;
+    font-family: 'Baloo 2', cursive;
+    font-size: 1.3rem;
+    font-weight: 800;
+    color: #0A0A1A;
+    background: linear-gradient(135deg, #FFD700, #FFA500, #FFD700);
+    background-size: 200% auto;
+    border: none;
+    border-radius: 60px;
+    cursor: pointer;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    box-shadow: 0 8px 32px rgba(255,165,0,0.5), 0 2px 0 rgba(255,255,255,0.3) inset;
+    transition: all 0.3s ease;
+    animation: btn-shimmer 3s linear infinite, btn-bounce 2s ease-in-out infinite;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .spin-btn::before {
+    content: '';
+    position: absolute;
+    top: -50%; left: -60%;
+    width: 30%; height: 200%;
+    background: rgba(255,255,255,0.4);
+    transform: skewX(-20deg);
+    animation: btn-shine 3s ease-in-out infinite;
+  }
+
+  @keyframes btn-shine {
+    0% { left: -60%; }
+    50%, 100% { left: 130%; }
+  }
+
+  @keyframes btn-shimmer {
+    0% { background-position: 0% center; }
+    100% { background-position: 200% center; }
+  }
+
+  @keyframes btn-bounce {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-4px); }
+  }
+
+  .spin-btn:hover {
+    box-shadow: 0 12px 48px rgba(255,165,0,0.7);
+    transform: translateY(-3px) scale(1.03);
+    animation: btn-shimmer 3s linear infinite;
+  }
+
+  .spin-btn:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+    animation: none;
+    transform: none;
+  }
+
+  /* Result display */
+  .result-container {
+    margin-top: 28px;
+    text-align: center;
+    min-height: 100px;
+    z-index: 1;
+    position: relative;
+  }
+
+  .result-box {
+    background: linear-gradient(135deg, rgba(255,215,0,0.1), rgba(255,165,0,0.05));
+    border: 2px solid rgba(255,215,0,0.4);
+    border-radius: 20px;
+    padding: 24px 48px;
+    backdrop-filter: blur(10px);
+    display: none;
+    animation: result-pop 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    box-shadow: 0 0 40px rgba(255,215,0,0.2);
+  }
+
+  .result-box.show {
+    display: block;
+  }
+
+  @keyframes result-pop {
+    from { transform: scale(0.5); opacity: 0; }
+    to { transform: scale(1); opacity: 1; }
+  }
+
+  .result-label {
+    font-size: 0.9rem;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: rgba(255,248,231,0.6);
+    margin-bottom: 8px;
+  }
+
+  .result-amount {
+    font-size: clamp(2.5rem, 8vw, 4rem);
+    font-weight: 800;
+    background: linear-gradient(135deg, #FFD700, #FF6B35, #FFD700);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    filter: drop-shadow(0 0 15px rgba(255,165,0,0.5));
+    line-height: 1;
+  }
+
+  .result-emoji {
+    font-size: 2rem;
+    margin-top: 8px;
+    display: block;
+    animation: emoji-dance 0.5s ease-in-out 3;
+  }
+
+  @keyframes emoji-dance {
+    0%, 100% { transform: rotate(-10deg) scale(1); }
+    50% { transform: rotate(10deg) scale(1.2); }
+  }
+
+  /* Confetti canvas */
+  #confettiCanvas {
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    pointer-events: none;
+    z-index: 100;
+  }
+
+  /* Sound toggle */
+  .sound-toggle {
+    margin-top: 16px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    color: rgba(255,248,231,0.6);
+    font-size: 0.9rem;
+    cursor: pointer;
+    z-index: 1;
+    position: relative;
+  }
+
+  .toggle-switch {
+    width: 44px; height: 24px;
+    background: rgba(255,255,255,0.15);
+    border-radius: 12px;
+    position: relative;
+    cursor: pointer;
+    border: 1px solid rgba(255,215,0,0.3);
+    transition: background 0.3s;
+  }
+
+  .toggle-switch.on { background: var(--emerald); }
+
+  .toggle-knob {
+    position: absolute;
+    top: 3px; left: 3px;
+    width: 18px; height: 18px;
+    border-radius: 50%;
+    background: white;
+    transition: transform 0.3s;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.3);
+  }
+
+  .toggle-switch.on .toggle-knob { transform: translateX(20px); }
+
+  /* Spin count */
+  .spin-counter {
+    margin-top: 12px;
+    font-size: 0.85rem;
+    color: rgba(255,248,231,0.4);
+    z-index: 1;
+    position: relative;
+  }
+
+  /* Footer */
+  footer {
+    width: 100%;
+    margin-top: 40px;
+    padding: 24px 20px;
+    text-align: center;
+    border-top: 1px solid rgba(255,215,0,0.15);
+    position: relative;
+    z-index: 1;
+  }
+
+  .footer-ornament {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    margin-bottom: 12px;
+  }
+
+  .footer-line {
+    width: 80px; height: 1px;
+    background: linear-gradient(to right, transparent, rgba(255,215,0,0.4));
+  }
+
+  .footer-line:last-child {
+    background: linear-gradient(to left, transparent, rgba(255,215,0,0.4));
+  }
+
+  .footer-text {
+    font-size: 0.85rem;
+    color: rgba(255,248,231,0.4);
+    letter-spacing: 1px;
+  }
+
+  .footer-name {
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: var(--gold);
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    filter: drop-shadow(0 0 8px rgba(255,215,0,0.4));
+  }
+
+  /* Floating lanterns */
+  .lantern {
+    position: fixed;
+    font-size: 1.5rem;
+    opacity: 0.4;
+    animation: float-up linear infinite;
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  @keyframes float-up {
+    from { transform: translateY(110vh) rotate(-10deg); opacity: 0.4; }
+    to { transform: translateY(-10vh) rotate(10deg); opacity: 0; }
+  }
+
+  /* Responsive */
+  @media (max-width: 480px) {
+    .spin-btn { padding: 16px 40px; font-size: 1.1rem; }
+    .result-box { padding: 18px 28px; }
+  }
+</style>
+</head>
+<body>
+
+<canvas id="confettiCanvas"></canvas>
+
+<!-- Floating lanterns -->
+<div class="lantern" style="left:8%;animation-duration:12s;animation-delay:0s">🪔</div>
+<div class="lantern" style="left:22%;animation-duration:15s;animation-delay:3s">🌙</div>
+<div class="lantern" style="left:70%;animation-duration:11s;animation-delay:6s">⭐</div>
+<div class="lantern" style="left:85%;animation-duration:14s;animation-delay:1s">🪔</div>
+<div class="lantern" style="left:45%;animation-duration:13s;animation-delay:8s">🌟</div>
+
+<header>
+  <span class="crescent">🌙</span>
+  <div class="eid-badge">✦ Eid Mubarak ✦</div>
+  <h1>Salami Wheel</h1>
+  <p class="subtitle">Spin & pick your Eid Salami! 🤗</p>
+  <div class="divider">
+    <div class="divider-line"></div>
+    <div class="divider-diamond"></div>
+    <div class="divider-line"></div>
+  </div>
+</header>
+
+<section class="wheel-section">
+  <div class="wheel-wrapper">
+    <canvas id="wheelCanvas" width="800" height="800"></canvas>
+    <div class="pointer"></div>
+    <div class="center-hub" id="centerHub" title="Click to Spin!">🎁</div>
+  </div>
+
+  <button class="spin-btn" id="spinBtn" onclick="spinWheel()">🎰 SPIN!</button>
+
+  <div class="sound-toggle" onclick="toggleSound()">
+    <div class="toggle-switch on" id="soundToggle">
+      <div class="toggle-knob"></div>
+    </div>
+    <span id="soundLabel">🔊 Sound On</span>
+  </div>
+
+  <div class="spin-counter" id="spinCounter">Spins: 0</div>
+
+  <div class="result-container">
+    <div class="result-box" id="resultBox">
+      <div class="result-label">🎉 You got Salami!</div>
+      <div class="result-amount" id="resultAmount"></div>
+      <span class="result-emoji" id="resultEmoji"></span>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="footer-ornament">
+    <div class="footer-line"></div>
+    <span style="color:var(--gold);font-size:1rem">✦</span>
+    <div class="footer-line"></div>
+  </div>
+  <div class="footer-text">Crafted with ❤️ by</div>
+  <div class="footer-name">Hamim Ahammed</div>
+  <div class="footer-text" style="margin-top:6px;font-size:0.75rem">Nonsense with Hamim • Khulna University</div>
+</footer>
+
+<script>
+// ─── Data ───────────────────────────────────────────────────────────────────
+const segments = [
+  { label: "1 Taka",    color: "#E74C3C" },
+  { label: "4.75 Taka", color: "#F39C12" },
+  { label: "5 Taka",    color: "#2ECC71" },
+  { label: "2.50 Taka", color: "#3498DB" },
+  { label: "7 Taka",    color: "#E74C3C" },
+  { label: "1.50 Taka", color: "#9B59B6" },
+  { label: "1.25 Taka", color: "#1ABC9C" },
+  { label: "5.25 Taka", color: "#E67E22" },
+  { label: "6.75 Taka", color: "#E74C3C" },
+  { label: "4.25 Taka", color: "#2ECC71" },
+  { label: "6 Taka",    color: "#3498DB" },
+  { label: "2.25 Taka", color: "#F39C12" },
+  { label: "7.75 Taka", color: "#9B59B6" },
+  { label: "8.25 Taka", color: "#1ABC9C" },
+  { label: "2 Taka",    color: "#E74C3C" },
+  { label: "7.25 Taka", color: "#E67E22" },
+  { label: "4 Taka",    color: "#2ECC71" },
+  { label: "9.25 Taka", color: "#3498DB" },
+  { label: "5.50 Taka", color: "#E74C3C" },
+  { label: "10 Taka",   color: "#F39C12" },
+  { label: "3 Taka",    color: "#9B59B6" },
+  { label: "3.50 Taka", color: "#1ABC9C" },
+  { label: "9 Taka",    color: "#E74C3C" },
+  { label: "6.50 Taka", color: "#2ECC71" },
+  { label: "5.75 Taka", color: "#3498DB" },
+  { label: "3.25 Taka", color: "#F39C12" },
+  { label: "3.75 Taka", color: "#E74C3C" },
+  { label: "8 Taka",    color: "#9B59B6" },
+  { label: "2.75 Taka", color: "#1ABC9C" },
+  { label: "8.75 Taka", color: "#E67E22" },
+  { label: "1.75 Taka", color: "#E74C3C" },
+  { label: "4.50 Taka", color: "#2ECC71" },
+  { label: "6.25 Taka", color: "#3498DB" },
+  { label: "8.50 Taka", color: "#F39C12" },
+  { label: "9.50 Taka", color: "#E74C3C" },
+  { label: "7.50 Taka", color: "#9B59B6" },
+  { label: "9.75 Taka", color: "#1ABC9C" },
+];
+
+const NUM = segments.length;
+const ARC = (2 * Math.PI) / NUM;
+
+// ─── Canvas Setup ────────────────────────────────────────────────────────────
+const canvas = document.getElementById('wheelCanvas');
+const ctx = canvas.getContext('2d');
+const W = canvas.width;
+const CX = W / 2, CY = W / 2, R = W / 2 - 16;
+
+let currentAngle = 0;
+let spinning = false;
+let spinCount = 0;
+let soundOn = true;
+
+// ─── Audio (Web Audio API) ───────────────────────────────────────────────────
+let audioCtx = null;
+
+function getAudioCtx() {
+  if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+  return audioCtx;
+}
+
+function playTick() {
+  if (!soundOn) return;
+  try {
+    const ac = getAudioCtx();
+    const osc = ac.createOscillator();
+    const gain = ac.createGain();
+    osc.connect(gain); gain.connect(ac.destination);
+    osc.type = 'triangle';
+    osc.frequency.setValueAtTime(600, ac.currentTime);
+    osc.frequency.exponentialRampToValueAtTime(300, ac.currentTime + 0.04);
+    gain.gain.setValueAtTime(0.3, ac.currentTime);
+    gain.gain.exponentialRampToValueAtTime(0.001, ac.currentTime + 0.05);
+    osc.start(); osc.stop(ac.currentTime + 0.06);
+  } catch(e) {}
+}
+
+function playWin() {
+  if (!soundOn) return;
+  try {
+    const ac = getAudioCtx();
+    const notes = [523, 659, 784, 1047];
+    notes.forEach((f, i) => {
+      const o = ac.createOscillator();
+      const g = ac.createGain();
+      o.connect(g); g.connect(ac.destination);
+      o.type = 'sine';
+      o.frequency.value = f;
+      g.gain.setValueAtTime(0, ac.currentTime + i*0.12);
+      g.gain.linearRampToValueAtTime(0.25, ac.currentTime + i*0.12 + 0.05);
+      g.gain.exponentialRampToValueAtTime(0.001, ac.currentTime + i*0.12 + 0.35);
+      o.start(ac.currentTime + i*0.12);
+      o.stop(ac.currentTime + i*0.12 + 0.4);
+    });
+  } catch(e) {}
+}
+
+// ─── Draw Wheel ───────────────────────────────────────────────────────────────
+function drawWheel(angle) {
+  ctx.clearRect(0, 0, W, W);
+
+  // Outer ring shadow
+  ctx.save();
+  ctx.shadowColor = 'rgba(0,0,0,0.5)';
+  ctx.shadowBlur = 30;
+
+  for (let i = 0; i < NUM; i++) {
+    const start = angle + i * ARC;
+    const end = start + ARC;
+
+    // Segment
+    ctx.beginPath();
+    ctx.moveTo(CX, CY);
+    ctx.arc(CX, CY, R, start, end);
+    ctx.closePath();
+    ctx.fillStyle = segments[i].color;
+    ctx.fill();
+
+    // Lighter inner tone
+    ctx.beginPath();
+    ctx.moveTo(CX, CY);
+    ctx.arc(CX, CY, R, start, end);
+    ctx.closePath();
+    const grad = ctx.createRadialGradient(CX, CY, 0, CX, CY, R);
+    grad.addColorStop(0, 'rgba(255,255,255,0.18)');
+    grad.addColorStop(0.5, 'rgba(255,255,255,0.05)');
+    grad.addColorStop(1, 'rgba(0,0,0,0.15)');
+    ctx.fillStyle = grad;
+    ctx.fill();
+
+    // Separator line
+    ctx.beginPath();
+    ctx.moveTo(CX, CY);
+    ctx.arc(CX, CY, R, start, end);
+    ctx.closePath();
+    ctx.strokeStyle = 'rgba(255,255,255,0.25)';
+    ctx.lineWidth = 2;
+    ctx.stroke();
+  }
+
+  ctx.restore();
+
+  // Labels
+  for (let i = 0; i < NUM; i++) {
+    const mid = angle + i * ARC + ARC / 2;
+    const textR = R * 0.65;
+    ctx.save();
+    ctx.translate(CX + textR * Math.cos(mid), CY + textR * Math.sin(mid));
+    ctx.rotate(mid + Math.PI / 2);
+
+    const fs = NUM > 30 ? 16 : 18;
+    ctx.font = `bold ${fs}px 'Baloo 2', sans-serif`;
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'middle';
+
+    // Text shadow
+    ctx.fillStyle = 'rgba(0,0,0,0.4)';
+    ctx.fillText(segments[i].label, 2, 2);
+
+    // Main text
+    ctx.fillStyle = '#FFFFFF';
+    ctx.shadowColor = 'rgba(0,0,0,0.6)';
+    ctx.shadowBlur = 4;
+    ctx.fillText(segments[i].label, 0, 0);
+
+    ctx.restore();
+  }
+
+  // Outer border
+  ctx.beginPath();
+  ctx.arc(CX, CY, R, 0, 2 * Math.PI);
+  ctx.strokeStyle = 'rgba(255,215,0,0.7)';
+  ctx.lineWidth = 6;
+  ctx.stroke();
+
+  // Inner circle (hub area)
+  ctx.beginPath();
+  ctx.arc(CX, CY, 50, 0, 2 * Math.PI);
+  ctx.fillStyle = '#0A0A1A';
+  ctx.fill();
+  ctx.strokeStyle = 'rgba(255,215,0,0.5)';
+  ctx.lineWidth = 3;
+  ctx.stroke();
+}
+
+drawWheel(currentAngle);
+
+// ─── Spin Logic ───────────────────────────────────────────────────────────────
+function spinWheel() {
+  if (spinning) return;
+  spinning = true;
+
+  document.getElementById('spinBtn').disabled = true;
+  document.getElementById('resultBox').classList.remove('show');
+  document.getElementById('centerHub').style.animation = 'none';
+
+  const extraSpins = 6 + Math.floor(Math.random() * 6);
+  const extraAngle = Math.random() * 2 * Math.PI;
+  const totalRotation = extraSpins * 2 * Math.PI + extraAngle;
+  const duration = 4000 + Math.random() * 2000;
+  const startAngle = currentAngle;
+  const startTime = performance.now();
+  let lastTickAngle = startAngle;
+
+  function easeOut(t) {
+    return 1 - Math.pow(1 - t, 4);
+  }
+
+  function animate(now) {
+    const elapsed = now - startTime;
+    const t = Math.min(elapsed / duration, 1);
+    const eased = easeOut(t);
+    const newAngle = startAngle + totalRotation * eased;
+    currentAngle = newAngle;
+    drawWheel(currentAngle);
+
+    // Tick sound on segment change
+    const tickInterval = ARC;
+    if (Math.floor(newAngle / tickInterval) !== Math.floor(lastTickAngle / tickInterval)) {
+      playTick();
+      lastTickAngle = newAngle;
+    }
+
+    if (t < 1) {
+      requestAnimationFrame(animate);
+    } else {
+      spinning = false;
+      spinCount++;
+      document.getElementById('spinCounter').textContent = `Spins: ${spinCount}`;
+      document.getElementById('spinBtn').disabled = false;
+      document.getElementById('centerHub').style.animation = '';
+
+      // Determine result
+      // Arrow points LEFT (at angle 0 from center = rightmost = π from left pointer)
+      // Pointer is on the RIGHT side (pointing LEFT into the wheel)
+      const pointerAngle = Math.PI; // pointer on right side, pointing at π
+      const normalised = ((pointerAngle - currentAngle) % (2 * Math.PI) + 2 * Math.PI) % (2 * Math.PI);
+      const idx = Math.floor(normalised / ARC) % NUM;
+      const winner = segments[idx];
+
+      showResult(winner.label);
+      playWin();
+      launchConfetti();
+    }
+  }
+
+  requestAnimationFrame(animate);
+}
+
+// Center hub also spins
+document.getElementById('centerHub').addEventListener('click', spinWheel);
+
+// ─── Result Display ────────────────────────────────────────────────────────────
+const emojis = {
+  high: ['🤑', '🥳', '🎉', '💸', '🤩'],
+  mid:  ['😊', '🙏', '💚', '✨', '😄'],
+  low:  ['😅', '🤭', '💸', '🌟', '🎊'],
+};
+
+function showResult(label) {
+  const val = parseFloat(label);
+  let pool = val >= 7 ? emojis.high : val >= 4 ? emojis.mid : emojis.low;
+  const emoji = pool[Math.floor(Math.random() * pool.length)];
+
+  document.getElementById('resultAmount').textContent = label;
+  document.getElementById('resultEmoji').textContent = emoji;
+  document.getElementById('resultBox').classList.add('show');
+}
+
+// ─── Confetti ─────────────────────────────────────────────────────────────────
+const confCanvas = document.getElementById('confettiCanvas');
+const confCtx = confCanvas.getContext('2d');
+confCanvas.width = window.innerWidth;
+confCanvas.height = window.innerHeight;
+window.addEventListener('resize', () => {
+  confCanvas.width = window.innerWidth;
+  confCanvas.height = window.innerHeight;
+});
+
+let confetti = [];
+
+function launchConfetti() {
+  const colors = ['#FFD700','#FF6B35','#00897B','#C0392B','#3498DB','#9B59B6','#2ECC71','#F1C40F'];
+  for (let i = 0; i < 120; i++) {
+    confetti.push({
+      x: Math.random() * confCanvas.width,
+      y: -10,
+      vx: (Math.random() - 0.5) * 6,
+      vy: Math.random() * 4 + 2,
+      w: Math.random() * 12 + 4,
+      h: Math.random() * 6 + 3,
+      color: colors[Math.floor(Math.random() * colors.length)],
+      rot: Math.random() * 360,
+      rv: (Math.random() - 0.5) * 8,
+      life: 1,
+    });
+  }
+  animateConfetti();
+}
+
+function animateConfetti() {
+  confCtx.clearRect(0, 0, confCanvas.width, confCanvas.height);
+  confetti = confetti.filter(p => p.life > 0);
+  if (!confetti.length) return;
+
+  confetti.forEach(p => {
+    p.x += p.vx; p.y += p.vy; p.rot += p.rv;
+    p.vy += 0.08;
+    if (p.y > confCanvas.height) p.life = 0;
+
+    confCtx.save();
+    confCtx.globalAlpha = Math.min(p.life, 1);
+    confCtx.translate(p.x, p.y);
+    confCtx.rotate(p.rot * Math.PI / 180);
+    confCtx.fillStyle = p.color;
+    confCtx.fillRect(-p.w/2, -p.h/2, p.w, p.h);
+    confCtx.restore();
+  });
+
+  requestAnimationFrame(animateConfetti);
+}
+
+// ─── Sound Toggle ─────────────────────────────────────────────────────────────
+function toggleSound() {
+  soundOn = !soundOn;
+  const toggle = document.getElementById('soundToggle');
+  const label = document.getElementById('soundLabel');
+  toggle.classList.toggle('on', soundOn);
+  label.textContent = soundOn ? '🔊 Sound On' : '🔇 Sound Off';
+}
+</script>
+</body>
+</html>
