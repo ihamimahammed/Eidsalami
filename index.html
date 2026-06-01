@@ -12,36 +12,51 @@
     /* Hero */
     .hero {
       height:100vh;
-      background:linear-gradient(135deg,#1f1c2c,#928dab);
+      background:linear-gradient(135deg,#1f1c2c,#928dab,#00c9ff,#ff6f61);
       display:flex;justify-content:center;align-items:center;text-align:center;
       position:relative;overflow:hidden;
+      perspective:1000px;
     }
-    .hero h1 {font-size:3rem;color:#ff6f61;text-shadow:0 0 20px #ff6f61;}
-    .hero p {margin:1rem 0;font-size:1.2rem;}
+    .hero h1 {
+      font-size:3.5rem;
+      color:#fff;
+      text-shadow:0 0 25px rgba(0,201,255,0.8);
+      transform:rotateY(0deg);
+      animation:float3D 6s infinite ease-in-out;
+    }
+    .hero p {margin:1rem 0;font-size:1.3rem;color:#f0f0f0;}
     .btn {
       display:inline-block;padding:12px 25px;
-      background:linear-gradient(45deg,#ff6f61,#00c9ff);
+      background:linear-gradient(45deg,#ff6f61,#00c9ff,#92fe9d);
       color:#fff;border-radius:30px;text-decoration:none;
       transition:transform 0.3s,box-shadow 0.3s;
     }
-    .btn:hover {transform:scale(1.1);box-shadow:0 0 20px #00c9ff;}
+    .btn:hover {transform:scale(1.1) rotateY(10deg);box-shadow:0 0 25px #00c9ff;}
 
     /* Sections */
     section {padding:80px 20px;}
-    h2 {font-size:2.5rem;margin-bottom:20px;text-align:center;color:#00c9ff;}
+    h2 {font-size:2.5rem;margin-bottom:20px;text-align:center;color:#00c9ff;text-shadow:0 0 15px #00c9ff;}
 
     /* Cards */
     .grid {display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:25px;}
     .card {
-      background:#1c1c1c;border-radius:12px;padding:20px;
-      transition:transform 0.4s,box-shadow 0.4s;
+      background:linear-gradient(145deg,#1c1c1c,#2a2a2a);
+      border-radius:12px;padding:20px;
+      transition:transform 0.5s,box-shadow 0.5s;
+      transform-style:preserve-3d;
     }
-    .card:hover {transform:translateY(-12px) scale(1.05);box-shadow:0 15px 30px rgba(255,255,255,0.2);}
+    .card:hover {
+      transform:translateY(-12px) scale(1.05) rotateY(5deg);
+      box-shadow:0 20px 40px rgba(0,201,255,0.3);
+    }
     .card h3 {color:#ff6f61;margin-bottom:10px;}
 
     /* Animations */
-    @keyframes fadeInUp {from{opacity:0;transform:translateY(30px);}to{opacity:1;transform:translateY(0);}}
-    .fade-in {animation:fadeInUp 2s ease;}
+    @keyframes float3D {
+      0% {transform:rotateY(0deg) translateY(0);}
+      50% {transform:rotateY(10deg) translateY(-15px);}
+      100% {transform:rotateY(0deg) translateY(0);}
+    }
   </style>
 </head>
 <body>
@@ -49,7 +64,7 @@
   <section class="hero">
     <div>
       <h1 id="typing"></h1>
-      <p class="fade-in">BBA Student | Content Strategist | Future Leader</p>
+      <p>BBA Student | Content Strategist | Future Leader</p>
       <a href="#about" class="btn">Discover More</a>
     </div>
   </section>
@@ -57,7 +72,7 @@
   <!-- About -->
   <section id="about">
     <h2>About Me</h2>
-    <p>I am a BBA student at Khulna University. I helped organize two club events (140 and 50 participants), served as a campus ambassador, and placed 1st Runners‑Up in a national content writing festival. I bring leadership, communication, and creativity to every role.</p>
+    <p>I am a BBA student at Khulna University. I helped organize two major club events, served as a campus ambassador, and placed 1st Runners‑Up in a national content writing festival. I bring leadership, communication, and creativity to every role.</p>
   </section>
 
   <!-- Experience -->
@@ -121,8 +136,6 @@
     <h2>Certifications</h2>
     <div class="grid">
       <div class="card"><h3>AI Skills</h3><p>Accenture / FutureLearn, Dec 2025</p></div>
-      <div class="card"><h3>Microsoft 365 Fundamentals</h3><p>Coursera, Oct 2024</p></div>
-      <div class="card"><h3>Dynamic Public Speaking</h3><p>University of Washington, Oct 2024</p></div>
       <div class="card"><h3>Effective Leadership</h3><p>HP, Oct 2024</p></div>
       <div class="card"><h3>IELTS</h3><p>Valid through Aug 2026</p></div>
     </div>
@@ -139,7 +152,7 @@
   <script>
     // Typing effect
     const typing = document.getElementById("typing");
-    const words = ["Hi, I'm Hamim 👋","Business Student","Content Strategist","Future Leader"];
+    const words = ["Hamim Ahammed","Business Student","Content Strategist","Future Leader"];
     let i=0,j=0,isDeleting=false;
     function type(){
       typing.textContent=words[i].substring(0,j);
