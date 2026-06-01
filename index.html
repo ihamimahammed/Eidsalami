@@ -1,716 +1,162 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>BrandAad 2.0 – Editable Poster</title>
-<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Rajdhani:wght@400;600;700&family=Orbitron:wght@700;900&display=swap" rel="stylesheet">
-<style>
-  :root {
-    --red: #C8102E;
-    --red-dark: #8B0000;
-    --red-bright: #FF1A3C;
-    --gold: #D4A017;
-    --gold-light: #F5C842;
-    --black: #0A0A0A;
-    --dark: #111111;
-    --dark2: #1A1A1A;
-    --white: #FFFFFF;
-    --gray: #AAAAAA;
-  }
-
-  * { box-sizing: border-box; margin: 0; padding: 0; }
-
-  body {
-    background: #1c1c1c;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    min-height: 100vh;
-    font-family: 'Rajdhani', sans-serif;
-    padding: 20px;
-  }
-
-  /* ── EDIT CONTROLS ── */
-  .controls {
-    background: #1e1e1e;
-    border: 1px solid #333;
-    border-radius: 12px;
-    padding: 20px 24px;
-    display: flex;
-    flex-wrap: wrap;
-    gap: 16px;
-    margin-bottom: 24px;
-    width: 900px;
-    max-width: 100%;
-  }
-  .controls h3 {
-    width: 100%;
-    color: var(--gold-light);
-    font-family: 'Rajdhani', sans-serif;
-    font-size: 13px;
-    font-weight: 700;
-    letter-spacing: 2px;
-    text-transform: uppercase;
-    border-bottom: 1px solid #333;
-    padding-bottom: 8px;
-    margin-bottom: 4px;
-  }
-  .ctrl-group {
-    display: flex;
-    flex-direction: column;
-    gap: 5px;
-    flex: 1 1 160px;
-  }
-  .ctrl-group label {
-    color: #888;
-    font-size: 11px;
-    letter-spacing: 1px;
-    text-transform: uppercase;
-  }
-  .ctrl-group input[type="text"],
-  .ctrl-group input[type="color"],
-  .ctrl-group select {
-    background: #2a2a2a;
-    border: 1px solid #444;
-    border-radius: 6px;
-    color: #eee;
-    padding: 6px 10px;
-    font-family: 'Rajdhani', sans-serif;
-    font-size: 13px;
-    width: 100%;
-  }
-  .ctrl-group input[type="color"] {
-    height: 36px;
-    padding: 2px 4px;
-    cursor: pointer;
-  }
-  .btn-row {
-    width: 100%;
-    display: flex;
-    gap: 10px;
-    margin-top: 4px;
-  }
-  .btn {
-    flex: 1;
-    padding: 10px;
-    border: none;
-    border-radius: 8px;
-    font-family: 'Bebas Neue', sans-serif;
-    font-size: 15px;
-    letter-spacing: 2px;
-    cursor: pointer;
-    transition: opacity .2s;
-  }
-  .btn:hover { opacity: .85; }
-  .btn-apply { background: var(--red); color: #fff; }
-  .btn-download { background: var(--gold); color: #000; }
-
-  /* ── POSTER ── */
-  #poster {
-    width: 900px;
-    max-width: 100%;
-    aspect-ratio: 1 / 1;
-    position: relative;
-    overflow: hidden;
-    background: var(--black);
-  }
-
-  /* Background layers */
-  .bg-gradient {
-    position: absolute; inset: 0;
-    background: radial-gradient(ellipse 80% 60% at 50% 30%, #3a0a10 0%, #160005 50%, #0A0A0A 100%);
-  }
-  .bg-gears {
-    position: absolute; inset: 0;
-    opacity: .07;
-    background-image:
-      url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200' viewBox='0 0 200 200'%3E%3Ccircle cx='100' cy='100' r='60' fill='none' stroke='%23C8102E' stroke-width='8'/%3E%3Ccircle cx='100' cy='100' r='40' fill='none' stroke='%23C8102E' stroke-width='4'/%3E%3Ccircle cx='100' cy='100' r='10' fill='%23C8102E'/%3E%3Cline x1='100' y1='20' x2='100' y2='40' stroke='%23C8102E' stroke-width='12'/%3E%3Cline x1='100' y1='160' x2='100' y2='180' stroke='%23C8102E' stroke-width='12'/%3E%3Cline x1='20' y1='100' x2='40' y2='100' stroke='%23C8102E' stroke-width='12'/%3E%3Cline x1='160' y1='100' x2='180' y2='100' stroke='%23C8102E' stroke-width='12'/%3E%3Cline x1='37' y1='37' x2='51' y2='51' stroke='%23C8102E' stroke-width='10'/%3E%3Cline x1='149' y1='149' x2='163' y2='163' stroke='%23C8102E' stroke-width='10'/%3E%3Cline x1='163' y1='37' x2='149' y2='51' stroke='%23C8102E' stroke-width='10'/%3E%3Cline x1='51' y1='149' x2='37' y2='163' stroke='%23C8102E' stroke-width='10'/%3E%3C/svg%3E");
-    background-size: 220px 220px;
-  }
-  .bg-red-bar {
-    position: absolute;
-    left: 0; right: 0;
-    top: 46%;
-    height: 12%;
-    background: linear-gradient(90deg, transparent 0%, var(--red-dark) 20%, var(--red) 50%, var(--red-dark) 80%, transparent 100%);
-    opacity: .15;
-  }
-
-  /* ── HEADER ── */
-  .header {
-    position: absolute;
-    top: 0; left: 0; right: 0;
-    display: flex;
-    justify-content: space-between;
-    align-items: flex-start;
-    padding: 22px 28px 0;
-  }
-  .logo-block {
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 2px;
-  }
-  .logo-uni {
-    font-family: 'Bebas Neue', sans-serif;
-    font-size: 13px;
-    letter-spacing: 3px;
-    color: var(--white);
-    line-height: 1.1;
-  }
-  .logo-uni span { color: var(--red-bright); }
-  .logo-club {
-    font-family: 'Orbitron', sans-serif;
-    font-size: 10px;
-    letter-spacing: 2px;
-    color: var(--gold-light);
-  }
-  .red-pill {
-    background: var(--red);
-    color: var(--white);
-    font-family: 'Bebas Neue', sans-serif;
-    font-size: 11px;
-    letter-spacing: 2px;
-    padding: 4px 12px;
-    border-radius: 20px;
-    margin-top: 4px;
-  }
-
-  /* ── SPONSOR ROW ── */
-  .sponsor-pill {
-    background: rgba(200,16,46,0.12);
-    border: 1px solid rgba(200,16,46,0.3);
-    color: var(--white);
-    font-family: 'Rajdhani', sans-serif;
-    font-size: 11px;
-    letter-spacing: 1px;
-    padding: 3px 10px;
-    border-radius: 4px;
-  }
-
-  /* ── TITLE SECTION ── */
-  .title-section {
-    position: absolute;
-    top: 10%;
-    left: 0; right: 0;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 4px;
-  }
-  .presents-line {
-    font-family: 'Rajdhani', sans-serif;
-    font-size: 13px;
-    letter-spacing: 4px;
-    color: var(--gray);
-    text-transform: uppercase;
-  }
-  .sponsor-brand {
-    font-family: 'Bebas Neue', sans-serif;
-    font-size: 28px;
-    letter-spacing: 6px;
-    background: linear-gradient(135deg, var(--gold-light), var(--gold));
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
-  }
-
-  /* ── MAIN TITLE ── */
-  .main-title-wrap {
-    position: absolute;
-    top: 20%;
-    left: 50%;
-    transform: translateX(-50%);
-    width: 85%;
-    text-align: center;
-  }
-  .main-title {
-    font-family: 'Bebas Neue', sans-serif;
-    font-size: 96px;
-    letter-spacing: 4px;
-    line-height: .9;
-    background: linear-gradient(180deg, #ffffff 0%, #ffcccc 50%, var(--red-bright) 100%);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
-    text-shadow: none;
-    position: relative;
-  }
-  .main-title::before {
-    content: attr(data-text);
-    position: absolute;
-    left: 0; top: 0; right: 0;
-    font-family: 'Bebas Neue', sans-serif;
-    font-size: 96px;
-    letter-spacing: 4px;
-    line-height: .9;
-    -webkit-text-stroke: 2px rgba(200,16,46,0.3);
-    -webkit-text-fill-color: transparent;
-    z-index: -1;
-  }
-  .version-badge {
-    display: inline-block;
-    background: var(--red);
-    color: var(--white);
-    font-family: 'Orbitron', sans-serif;
-    font-size: 14px;
-    font-weight: 900;
-    padding: 2px 10px;
-    border-radius: 4px;
-    vertical-align: super;
-    margin-left: 4px;
-  }
-  .subtitle-tag {
-    display: inline-block;
-    margin-top: 6px;
-    background: linear-gradient(90deg, transparent, var(--red-dark), var(--red), var(--red-dark), transparent);
-    color: var(--white);
-    font-family: 'Rajdhani', sans-serif;
-    font-size: 13px;
-    font-weight: 700;
-    letter-spacing: 3px;
-    padding: 6px 28px;
-    text-transform: uppercase;
-  }
-  .tagline {
-    font-family: 'Orbitron', sans-serif;
-    font-size: 11px;
-    font-weight: 700;
-    letter-spacing: 4px;
-    color: var(--gold-light);
-    text-transform: uppercase;
-    margin-top: 6px;
-  }
-
-  /* ── SPONSORS MIDDLE ── */
-  .sponsors-row {
-    position: absolute;
-    top: 48%;
-    left: 50%;
-    transform: translateX(-50%);
-    display: flex;
-    gap: 0;
-    align-items: center;
-    width: 80%;
-    justify-content: center;
-  }
-  .sp-block {
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    padding: 8px 14px;
-    border-right: 1px solid rgba(200,16,46,0.25);
-  }
-  .sp-block:last-child { border-right: none; }
-  .sp-label {
-    font-size: 9px;
-    letter-spacing: 2px;
-    color: #888;
-    text-transform: uppercase;
-    margin-bottom: 4px;
-  }
-  .sp-name {
-    font-family: 'Bebas Neue', sans-serif;
-    font-size: 20px;
-    letter-spacing: 3px;
-    color: var(--white);
-  }
-  .sp-name.gold { color: var(--gold-light); }
-
-  /* ── ANNOUNCEMENT BANNER ── */
-  .announcement {
-    position: absolute;
-    top: 57%;
-    left: 0; right: 0;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 0 6%;
-    gap: 16px;
-  }
-  .ann-line {
-    flex: 1;
-    height: 2px;
-    background: linear-gradient(90deg, transparent, var(--red));
-  }
-  .ann-line.right { background: linear-gradient(90deg, var(--red), transparent); }
-  .ann-box {
-    background: linear-gradient(135deg, var(--red-dark), var(--red), var(--red-bright));
-    color: var(--white);
-    font-family: 'Bebas Neue', sans-serif;
-    font-size: 28px;
-    letter-spacing: 3px;
-    padding: 12px 36px;
-    clip-path: polygon(8px 0%, 100% 0%, calc(100% - 8px) 100%, 0% 100%);
-    text-shadow: 0 0 20px rgba(0,0,0,0.5);
-    position: relative;
-    box-shadow: 0 0 30px rgba(200,16,46,0.5);
-  }
-  .ann-icon {
-    font-size: 22px;
-    margin-right: 8px;
-  }
-
-  /* ── VISUAL ICON AREA ── */
-  .visual-area {
-    position: absolute;
-    top: 63%;
-    left: 50%;
-    transform: translateX(-50%);
-    width: 340px;
-    height: 200px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  }
-  .orbit-ring {
-    position: absolute;
-    border-radius: 50%;
-    border: 1.5px dashed rgba(200,16,46,0.35);
-  }
-  .ring1 { width: 180px; height: 180px; }
-  .ring2 { width: 260px; height: 260px; top: -30px; }
-  .center-icon {
-    width: 80px; height: 80px;
-    background: linear-gradient(135deg, #1a0005, var(--red-dark));
-    border: 2px solid var(--red);
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 32px;
-    box-shadow: 0 0 30px rgba(200,16,46,0.6), inset 0 0 20px rgba(200,16,46,0.2);
-    position: relative;
-    z-index: 2;
-  }
-  .orbit-dot {
-    position: absolute;
-    width: 36px; height: 36px;
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 16px;
-  }
-  .dot-red { background: var(--red); }
-  .dot-dark { background: #2a0a10; border: 1px solid var(--red); }
-  .dot-gold { background: var(--gold-dark, #9a7000); border: 1px solid var(--gold-light); }
-
-  /* ── SUB MESSAGE ── */
-  .sub-msg {
-    position: absolute;
-    top: 84%;
-    left: 50%;
-    transform: translateX(-50%);
-    text-align: center;
-    font-family: 'Rajdhani', sans-serif;
-    font-size: 16px;
-    font-weight: 600;
-    letter-spacing: 2px;
-    color: var(--white);
-    white-space: nowrap;
-  }
-  .sub-msg span { color: var(--gold-light); }
-
-  /* ── PARTNERS FOOTER ── */
-  .footer {
-    position: absolute;
-    bottom: 0; left: 0; right: 0;
-    background: rgba(0,0,0,0.85);
-    border-top: 1px solid rgba(200,16,46,0.3);
-    padding: 8px 20px;
-    display: flex;
-    flex-wrap: wrap;
-    gap: 4px 14px;
-    justify-content: center;
-  }
-  .partner-tag {
-    font-size: 8px;
-    letter-spacing: .5px;
-    color: #777;
-    text-transform: uppercase;
-  }
-  .partner-tag strong {
-    color: #bbb;
-    font-weight: 700;
-  }
-
-  /* ── RED CORNER ACCENTS ── */
-  .corner {
-    position: absolute;
-    width: 50px; height: 50px;
-  }
-  .corner-tl {
-    top: 0; left: 0;
-    border-top: 3px solid var(--red);
-    border-left: 3px solid var(--red);
-  }
-  .corner-tr {
-    top: 0; right: 0;
-    border-top: 3px solid var(--red);
-    border-right: 3px solid var(--red);
-  }
-  .corner-bl {
-    bottom: 0; left: 0;
-    border-bottom: 3px solid var(--red);
-    border-left: 3px solid var(--red);
-  }
-  .corner-br {
-    bottom: 0; right: 0;
-    border-bottom: 3px solid var(--red);
-    border-right: 3px solid var(--red);
-  }
-
-  /* horizontal scan line */
-  .scan-line {
-    position: absolute;
-    left: 0; right: 0;
-    height: 1px;
-    background: linear-gradient(90deg, transparent, rgba(200,16,46,0.5), transparent);
-    animation: scan 4s linear infinite;
-  }
-  @keyframes scan {
-    0% { top: 0; opacity: 1; }
-    100% { top: 100%; opacity: 0; }
-  }
-</style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Hamim's Portfolio</title>
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
-
-<!-- CONTROLS -->
-<div class="controls">
-  <h3>✏️ Edit Poster Content</h3>
-
-  <div class="ctrl-group">
-    <label>Event Name</label>
-    <input type="text" id="c-eventname" value="BrandAad">
-  </div>
-  <div class="ctrl-group">
-    <label>Version / Edition</label>
-    <input type="text" id="c-version" value="2.0">
-  </div>
-  <div class="ctrl-group">
-    <label>Subtitle</label>
-    <input type="text" id="c-subtitle" value="An Inter University Business Strategy Competition">
-  </div>
-  <div class="ctrl-group">
-    <label>Tagline</label>
-    <input type="text" id="c-tagline" value="Revive The Brand">
-  </div>
-  <div class="ctrl-group">
-    <label>Announcement Text</label>
-    <input type="text" id="c-announcement" value="Final Round Case Has Been Mailed">
-  </div>
-  <div class="ctrl-group">
-    <label>Sub Message</label>
-    <input type="text" id="c-submsg" value="Kindly Check Team Leader's Mail">
-  </div>
-  <div class="ctrl-group">
-    <label>Presenter / Sponsor Brand</label>
-    <input type="text" id="c-presenter" value="Dabur Zenfresh Presents">
-  </div>
-  <div class="ctrl-group">
-    <label>University Name</label>
-    <input type="text" id="c-university" value="East West University">
-  </div>
-  <div class="ctrl-group">
-    <label>Club Name</label>
-    <input type="text" id="c-club" value="EWU Business Club">
-  </div>
-  <div class="ctrl-group">
-    <label>Co-Sponsor</label>
-    <input type="text" id="c-cosponsor" value="WEGRO">
-  </div>
-  <div class="ctrl-group">
-    <label>Powered By</label>
-    <input type="text" id="c-powered" value="Monno">
-  </div>
-  <div class="ctrl-group">
-    <label>In Association With</label>
-    <input type="text" id="c-assoc" value="Accfintax">
-  </div>
-  <div class="ctrl-group">
-    <label>Accent Color</label>
-    <input type="color" id="c-accentcolor" value="#C8102E">
-  </div>
-
-  <div class="btn-row">
-    <button class="btn btn-apply" onclick="applyEdits()">▶ Apply Changes</button>
-    <button class="btn btn-download" onclick="downloadPoster()">⬇ Download PNG</button>
-  </div>
-</div>
-
-<!-- POSTER -->
-<div id="poster">
-  <div class="bg-gradient"></div>
-  <div class="bg-gears"></div>
-  <div class="bg-red-bar"></div>
-  <div class="scan-line"></div>
-
-  <!-- Corners -->
-  <div class="corner corner-tl"></div>
-  <div class="corner corner-tr"></div>
-  <div class="corner corner-bl"></div>
-  <div class="corner corner-br"></div>
-
-  <!-- Header -->
-  <div class="header">
-    <div class="logo-block">
-      <div class="logo-uni" id="p-university">EAST<br><span>WEST</span><br>UNIVERSITY</div>
-      <div class="logo-club" id="p-club">EWU BUSINESS CLUB</div>
-      <div class="red-pill">Est. 2010</div>
+  <!-- Hero Section -->
+  <section class="hero">
+    <div class="overlay"></div>
+    <div class="hero-content">
+      <h1><span class="typing"></span></h1>
+      <p class="fade-in">Business Student | Content Strategist | Future Leader</p>
+      <a href="#projects" class="btn">Explore My Work</a>
     </div>
-    <div class="logo-block" style="align-items:flex-end;">
-      <div class="logo-club" style="color:#C8102E; font-size:12px; letter-spacing:3px;">ENTREPRENEURSHIP</div>
-      <div class="logo-uni" style="text-align:right;">LEADERSHIP &amp;<br><span>INNOVATION</span></div>
+  </section>
+
+  <!-- About Section -->
+  <section id="about" class="about">
+    <h2>About Me</h2>
+    <p>I’m Hamim, a BBA student at Khulna University. I love creating wow‑factor presentations, solving business cases, and building exam‑ready resources.</p>
+  </section>
+
+  <!-- Projects Section -->
+  <section id="projects" class="projects">
+    <h2>Projects</h2>
+    <div class="project-grid">
+      <div class="project-card">
+        <img src="assets/project1.jpg" alt="Project 1">
+        <h3>Case Study</h3>
+        <p>Strategic marketing analysis with engaging visuals.</p>
+      </div>
+      <div class="project-card">
+        <img src="assets/project2.jpg" alt="Project 2">
+        <h3>Business Math Cheat Sheet</h3>
+        <p>Exam‑ready formulas and shortcuts.</p>
+      </div>
+      <div class="project-card">
+        <img src="assets/project3.jpg" alt="Project 3">
+        <h3>Presentation Script</h3>
+        <p>Hook → Value → Impact framework in action.</p>
+      </div>
     </div>
-  </div>
+  </section>
 
-  <!-- Presents line -->
-  <div class="title-section">
-    <div class="presents-line">Presents</div>
-    <div class="sponsor-brand" id="p-presenter">DABUR ZENFRESH PRESENTS</div>
-  </div>
+  <!-- Contact Section -->
+  <section id="contact" class="contact">
+    <h2>Contact Me</h2>
+    <p>Let’s collaborate! Reach out via email or socials.</p>
+    <a href="mailto:ihamimahammed@gmail.com" class="btn">Email Me</a>
+  </section>
 
-  <!-- Main Title -->
-  <div class="main-title-wrap">
-    <div class="main-title" id="p-eventname" data-text="BRANDAAD">BRANDAAD<span class="version-badge" id="p-version">2.0</span></div>
-    <div class="subtitle-tag" id="p-subtitle">AN INTER UNIVERSITY BUSINESS STRATEGY COMPETITION</div>
-    <div class="tagline" id="p-tagline">⚡ REVIVE THE BRAND ⚡</div>
-  </div>
-
-  <!-- Sponsors middle -->
-  <div class="sponsors-row">
-    <div class="sp-block">
-      <div class="sp-label">Co-Sponsored by</div>
-      <div class="sp-name gold" id="p-cosponsor">WEGRO</div>
-    </div>
-    <div class="sp-block">
-      <div class="sp-label">Powered by</div>
-      <div class="sp-name" id="p-powered">MONNO</div>
-    </div>
-    <div class="sp-block">
-      <div class="sp-label">In Association With</div>
-      <div class="sp-name" id="p-assoc">ACCFINTAX</div>
-    </div>
-  </div>
-
-  <!-- Announcement Banner -->
-  <div class="announcement">
-    <div class="ann-line"></div>
-    <div class="ann-box">
-      <span class="ann-icon">📩</span>
-      <span id="p-announcement">FINAL ROUND CASE HAS BEEN MAILED</span>
-    </div>
-    <div class="ann-line right"></div>
-  </div>
-
-  <!-- Visual Icon Area -->
-  <div class="visual-area">
-    <div class="orbit-ring ring2"></div>
-    <div class="orbit-ring ring1"></div>
-    <div class="center-icon">📧</div>
-    <!-- orbit dots -->
-    <div class="orbit-dot dot-red" style="top:10px; left:50%; transform:translateX(-50%)">📱</div>
-    <div class="orbit-dot dot-dark" style="top:50%; left:10px; transform:translateY(-50%)">@</div>
-    <div class="orbit-dot dot-dark" style="top:50%; right:10px; transform:translateY(-50%)">💻</div>
-    <div class="orbit-dot dot-red" style="bottom:10px; left:50%; transform:translateX(-50%)">✉️</div>
-    <div class="orbit-dot dot-gold" style="top:20%; right:8%">👥</div>
-    <div class="orbit-dot dot-gold" style="bottom:20%; left:8%">💬</div>
-  </div>
-
-  <!-- Sub message -->
-  <div class="sub-msg">
-    <span id="p-submsg">Kindly Check <span>Team Leader's Mail</span></span>
-  </div>
-
-  <!-- Footer partners -->
-  <div class="footer">
-    <span class="partner-tag"><strong>Media Partner:</strong> Channel 1</span>
-    <span class="partner-tag"><strong>Broadcast:</strong> Jamuna TV</span>
-    <span class="partner-tag"><strong>Online:</strong> JagoNews24</span>
-    <span class="partner-tag"><strong>Strategic:</strong> Rotary</span>
-    <span class="partner-tag"><strong>Education:</strong> Shikho</span>
-    <span class="partner-tag"><strong>Gift:</strong> Dabur</span>
-    <span class="partner-tag"><strong>Printing:</strong> Dakpay</span>
-    <span class="partner-tag"><strong>Video:</strong> Chayachitro</span>
-    <span class="partner-tag"><strong>Photo:</strong> GS</span>
-    <span class="partner-tag"><strong>Lifestyle:</strong> Art Star</span>
-    <span class="partner-tag"><strong>Bangla Media:</strong> Khaborer Kagoj</span>
-    <span class="partner-tag"><strong>Infographic:</strong> Infogram</span>
-    <span class="partner-tag"><strong>Radio:</strong> Radio Carnival</span>
-    <span class="partner-tag"><strong>Hospitality:</strong> TBD</span>
-    <span class="partner-tag"><strong>Technology:</strong> ASUS</span>
-    <span class="partner-tag"><strong>Logistic:</strong> Link3</span>
-    <span class="partner-tag"><strong>Snacks:</strong> Nestlé</span>
-    <span class="partner-tag"><strong>Refreshment:</strong> Detos</span>
-    <span class="partner-tag"><strong>Skill Dev:</strong> Ostad</span>
-  </div>
-</div>
-
-<script>
-function applyEdits() {
-  const map = {
-    'c-eventname': 'p-eventname',
-    'c-version': 'p-version',
-    'c-subtitle': 'p-subtitle',
-    'c-tagline': 'p-tagline',
-    'c-announcement': 'p-announcement',
-    'c-presenter': 'p-presenter',
-    'c-university': 'p-university',
-    'c-club': 'p-club',
-    'c-cosponsor': 'p-cosponsor',
-    'c-powered': 'p-powered',
-    'c-assoc': 'p-assoc',
-  };
-
-  for (const [cid, pid] of Object.entries(map)) {
-    const val = document.getElementById(cid).value.toUpperCase();
-    const el = document.getElementById(pid);
-    if (el) {
-      if (pid === 'p-eventname') {
-        // preserve version badge inside
-        const badge = document.getElementById('p-version');
-        el.textContent = val;
-        el.dataset.text = val;
-        el.appendChild(badge);
-      } else if (pid === 'p-tagline') {
-        el.textContent = '⚡ ' + val + ' ⚡';
-      } else {
-        el.textContent = val;
-      }
-    }
-  }
-
-  // sub message special
-  const subVal = document.getElementById('c-submsg').value;
-  document.getElementById('p-submsg').innerHTML = subVal;
-
-  // accent color
-  const color = document.getElementById('c-accentcolor').value;
-  document.documentElement.style.setProperty('--red', color);
-  // Derive a darker variant
-  document.documentElement.style.setProperty('--red-bright', color);
-}
-
-async function downloadPoster() {
-  // Use html2canvas via CDN
-  if (typeof html2canvas === 'undefined') {
-    const s = document.createElement('script');
-    s.src = 'https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js';
-    document.head.appendChild(s);
-    await new Promise(r => s.onload = r);
-  }
-  const poster = document.getElementById('poster');
-  const canvas = await html2canvas(poster, { scale: 2, useCORS: true, backgroundColor: null });
-  const link = document.createElement('a');
-  link.download = 'brandaad2_poster.png';
-  link.href = canvas.toDataURL('image/png');
-  link.click();
-}
-</script>
+  <script src="script.js"></script>
 </body>
 </html>
+/* Reset */
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { font-family: 'Poppins', sans-serif; background: #0f0f0f; color: #fff; }
+
+/* Hero Section */
+.hero {
+  height: 100vh;
+  background: url('assets/hero-bg.jpg') center/cover fixed;
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+}
+.hero .overlay {
+  position: absolute;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: rgba(0,0,0,0.6);
+}
+.hero-content {
+  position: relative;
+  z-index: 1;
+}
+.hero h1 {
+  font-size: 3rem;
+  color: #ff6f61;
+  text-shadow: 0 0 20px #ff6f61;
+}
+.hero p {
+  margin: 1rem 0;
+  font-size: 1.2rem;
+  animation: fadeIn 3s ease;
+}
+.btn {
+  display: inline-block;
+  padding: 12px 25px;
+  background: linear-gradient(45deg, #ff6f61, #00c9ff);
+  color: #fff;
+  border-radius: 30px;
+  text-decoration: none;
+  transition: transform 0.3s, box-shadow 0.3s;
+}
+.btn:hover {
+  transform: scale(1.1);
+  box-shadow: 0 0 20px #00c9ff;
+}
+
+/* Sections */
+section { padding: 80px 20px; }
+h2 { font-size: 2.5rem; margin-bottom: 20px; text-align: center; }
+
+/* Projects */
+.project-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 25px;
+}
+.project-card {
+  background: #1c1c1c;
+  border-radius: 12px;
+  overflow: hidden;
+  transition: transform 0.4s, box-shadow 0.4s;
+}
+.project-card:hover {
+  transform: translateY(-12px) scale(1.05);
+  box-shadow: 0 15px 30px rgba(255,255,255,0.2);
+}
+.project-card img { width: 100%; display: block; }
+
+/* Animations */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(30px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+// Typing effect
+const typing = document.querySelector(".typing");
+const words = ["Hi, I'm Hamim 👋", "Creative Business Student", "Future Strategist"];
+let i = 0, j = 0, currentWord = "", isDeleting = false;
+
+function type() {
+  currentWord = words[i];
+  typing.textContent = currentWord.substring(0, j);
+  if (!isDeleting && j < currentWord.length) {
+    j++;
+    setTimeout(type, 150);
+  } else if (isDeleting && j > 0) {
+    j--;
+    setTimeout(type, 100);
+  } else {
+    isDeleting = !isDeleting;
+    if (!isDeleting) i = (i + 1) % words.length;
+    setTimeout(type, 1000);
+  }
+}
+type();
+
+// Smooth scroll
+document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+  anchor.addEventListener("click", function(e) {
+    e.preventDefault();
+    document.querySelector(this.getAttribute("href")).scrollIntoView({
+      behavior: "smooth"
+    });
+  });
+});
