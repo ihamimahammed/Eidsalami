@@ -6,163 +6,152 @@
   <title>Hamim Ahammed | Portfolio</title>
   <style>
     * {margin:0;padding:0;box-sizing:border-box;}
-    body {font-family:'Poppins',sans-serif;background:#0d0d0d;color:#fff;overflow-x:hidden;}
+    body {font-family:'Poppins',sans-serif;background:#f5f5f5;color:#333;overflow-x:hidden;}
 
-    /* Cinematic Hero */
-    .hero {
-      height:100vh;
+    /* Carousel Container */
+    .carousel {
+      display:flex;overflow-x:auto;scroll-snap-type:x mandatory;
+      height:100vh;scroll-behavior:smooth;
+    }
+    .slide {
+      flex:0 0 100%;scroll-snap-align:center;
       display:flex;justify-content:center;align-items:center;
-      background:linear-gradient(135deg,#1f1c2c,#928dab,#00c9ff,#ff6f61);
-      position:relative;overflow:hidden;perspective:1500px;
+      position:relative;perspective:1200px;
+      background:linear-gradient(135deg,#ff6f61,#00c9ff,#92fe9d);
+      color:#fff;
     }
-    .hero::before {
-      content:"";position:absolute;top:0;left:0;width:100%;height:100%;
-      background:url('https://picsum.photos/1920/1080?blur') center/cover no-repeat;
-      opacity:0.25;transform:translateZ(-200px) scale(1.2);
+    .slide-content {
+      text-align:center;transform-style:preserve-3d;
+      animation:fadeInUp 2s ease;
+      max-width:800px;padding:20px;
     }
-    .hero-content {
-      position:relative;z-index:2;text-align:center;transform-style:preserve-3d;
-      animation:zoomIn 3s ease forwards;
-    }
-    .hero h1 {
-      font-size:4rem;color:#fff;text-shadow:0 0 40px rgba(0,201,255,0.8);
-      animation:float3D 8s infinite ease-in-out;
-    }
-    .hero p {margin:1rem 0;font-size:1.4rem;color:#f0f0f0;}
-    .btn {
-      display:inline-block;padding:14px 30px;
-      background:linear-gradient(90deg,#ff6f61,#00c9ff,#92fe9d);
-      color:#fff;border-radius:40px;text-decoration:none;
-      transition:transform 0.5s,box-shadow 0.5s;
-    }
-    .btn:hover {transform:scale(1.2) rotateY(20deg);box-shadow:0 0 40px #00c9ff;}
+    .slide h1, .slide h2 {text-shadow:0 0 20px rgba(0,0,0,0.5);}
+    .slide h1 {font-size:3rem;margin-bottom:20px;}
+    .slide h2 {font-size:2rem;margin-bottom:15px;}
+    .slide p {font-size:1.2rem;margin-bottom:20px;}
 
-    /* Sections */
-    section {padding:100px 10%;position:relative;}
-    h2 {font-size:2.8rem;margin-bottom:40px;text-align:center;color:#00c9ff;text-shadow:0 0 20px #00c9ff;}
-
-    /* 3D Cards */
-    .grid {display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:40px;perspective:1000px;}
+    /* 3D Card Grid */
+    .grid {display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:25px;}
     .card {
-      background:linear-gradient(145deg,#1c1c1c,#2a2a2a);
-      border-radius:20px;padding:30px;
+      background:#fff;color:#333;border-radius:15px;padding:20px;
       transition:transform 0.8s,box-shadow 0.8s;
       transform-style:preserve-3d;
     }
     .card:hover {
-      transform:rotateY(15deg) rotateX(5deg) translateY(-20px) scale(1.05);
-      box-shadow:0 30px 60px rgba(0,201,255,0.4);
+      transform:rotateY(15deg) rotateX(5deg) translateY(-10px);
+      box-shadow:0 20px 40px rgba(0,0,0,0.3);
     }
-    .card h3 {color:#ff6f61;margin-bottom:15px;font-size:1.4rem;}
+    .card h3 {color:#ff6f61;margin-bottom:10px;}
 
     /* Animations */
-    @keyframes float3D {
-      0% {transform:rotateY(0deg) translateY(0);}
-      50% {transform:rotateY(15deg) translateY(-20px);}
-      100% {transform:rotateY(0deg) translateY(0);}
-    }
-    @keyframes zoomIn {
-      from {transform:scale(0.7) translateZ(-300px);opacity:0;}
-      to {transform:scale(1) translateZ(0);opacity:1;}
+    @keyframes fadeInUp {
+      from {opacity:0;transform:translateY(40px);}
+      to {opacity:1;transform:translateY(0);}
     }
 
-    /* Responsive */
+    /* Navigation */
+    .nav {
+      position:fixed;bottom:20px;left:50%;transform:translateX(-50%);
+      display:flex;gap:10px;z-index:10;
+    }
+    .nav a {
+      width:15px;height:15px;border-radius:50%;
+      background:#333;opacity:0.5;transition:opacity 0.3s;
+    }
+    .nav a.active {opacity:1;background:#ff6f61;}
+    .nav a:hover {opacity:1;}
+    
     @media(max-width:768px){
-      .hero h1{font-size:2.5rem;}
-      h2{font-size:2rem;}
-      section{padding:60px 5%;}
+      .slide h1{font-size:2rem;}
+      .slide h2{font-size:1.5rem;}
+      .slide p{font-size:1rem;}
     }
   </style>
 </head>
 <body>
-  <!-- Hero -->
-  <section class="hero">
-    <div class="hero-content">
-      <h1 id="typing"></h1>
-      <p>BBA Student | Content Strategist | Future Leader</p>
-      <a href="#about" class="btn">Explore My Work</a>
-    </div>
-  </section>
-
-  <!-- About -->
-  <section id="about">
-    <h2>About Me</h2>
-    <p>I am a BBA student at Khulna University. I helped organize major club events, served as a campus ambassador, and placed 1st Runners‑Up in a national content writing festival. I bring leadership, communication, and creativity to every role.</p>
-  </section>
-
-  <!-- Experience -->
-  <section id="experience">
-    <h2>Experience</h2>
-    <div class="grid">
-      <div class="card">
-        <h3>Executive Board Member | KUBC</h3>
-        <p>Co‑organized bKash financial awareness (140+ students) and Career Pathways session (50 participants). Contributing to club planning and event strategy.</p>
+  <div class="carousel">
+    <!-- Hero -->
+    <section class="slide">
+      <div class="slide-content">
+        <h1 id="typing"></h1>
+        <p>BBA Student | Content Strategist | Future Leader</p>
       </div>
-      <div class="card">
-        <h3>Campus Ambassador | Showcase 1.0</h3>
-        <p>Represented Khulna University at Army IBA Sylhet. Coordinated communication between organizers and campus participants.</p>
-      </div>
-    </div>
-  </section>
+    </section>
 
-  <!-- Campus Involvement -->
-  <section id="campus">
-    <h2>Campus Involvement</h2>
-    <div class="grid">
-      <div class="card">
-        <h3>Rotaract Club</h3>
-        <p>Part of the team that ran the Eid Gift to the Poor initiative, distributing essentials to underprivileged families in Khulna.</p>
+    <!-- About -->
+    <section class="slide">
+      <div class="slide-content">
+        <h2>About Me</h2>
+        <p>I am a BBA student at Khulna University. I helped organize major club events, served as a campus ambassador, and placed 1st Runners‑Up in a national content writing festival.</p>
       </div>
-      <div class="card">
-        <h3>Business Competitions</h3>
-        <p>Submitted research and strategy pieces to inter‑university competitions across Bangladesh and India. Worked on market analysis, campaign planning, and problem solving.</p>
+    </section>
+
+    <!-- Experience -->
+    <section class="slide">
+      <div class="slide-content">
+        <h2>Experience</h2>
+        <div class="grid">
+          <div class="card">
+            <h3>Executive Board Member | KUBC</h3>
+            <p>Organized bKash financial awareness (140+ students) and Career Pathways session (50 participants).</p>
+          </div>
+          <div class="card">
+            <h3>Campus Ambassador | Showcase 1.0</h3>
+            <p>Represented Khulna University at Army IBA Sylhet. Coordinated communication between organizers and participants.</p>
+          </div>
+        </div>
       </div>
-    </div>
-  </section>
+    </section>
 
-  <!-- Achievements -->
-  <section id="achievements">
-    <h2>Achievements</h2>
-    <div class="grid">
-      <div class="card">
-        <h3>1st Runners‑Up</h3>
-        <p>Content Writing | IGNITION 2026, KUET</p>
+    <!-- Achievements -->
+    <section class="slide">
+      <div class="slide-content">
+        <h2>Achievements</h2>
+        <div class="grid">
+          <div class="card"><h3>1st Runners‑Up</h3><p>Content Writing | IGNITION 2026, KUET</p></div>
+          <div class="card"><h3>National Award</h3><p>Storytelling | UNESCO & UGC Bangladesh, 2025</p></div>
+        </div>
       </div>
-      <div class="card">
-        <h3>National Award</h3>
-        <p>Storytelling | UNESCO & UGC Bangladesh, 2025</p>
+    </section>
+
+    <!-- Skills -->
+    <section class="slide">
+      <div class="slide-content">
+        <h2>Skills</h2>
+        <div class="grid">
+          <div class="card"><h3>Communication</h3><p>English & Bangla; IELTS certified</p></div>
+          <div class="card"><h3>Leadership</h3><p>Event planning, campus outreach</p></div>
+          <div class="card"><h3>Content Writing</h3><p>Award‑winning competition writing</p></div>
+          <div class="card"><h3>Tools</h3><p>Microsoft Office Suite (Honors), Google Workspace</p></div>
+        </div>
       </div>
-    </div>
-  </section>
+    </section>
 
-  <!-- Skills -->
-  <section id="skills">
-    <h2>Skills</h2>
-    <div class="grid">
-      <div class="card"><h3>Communication</h3><p>English & Bangla; IELTS certified</p></div>
-      <div class="card"><h3>Leadership</h3><p>Event planning, campus outreach, representation</p></div>
-      <div class="card"><h3>Content Writing</h3><p>Competition‑level writing, award‑winning</p></div>
-      <div class="card"><h3>Tools</h3><p>Microsoft Office Suite (Honors), Google Workspace</p></div>
-    </div>
-  </section>
+    <!-- Certifications -->
+    <section class="slide">
+      <div class="slide-content">
+        <h2>Certifications</h2>
+        <div class="grid">
+          <div class="card"><h3>AI Skills</h3><p>Accenture / FutureLearn, Dec 2025</p></div>
+          <div class="card"><h3>Effective Leadership</h3><p>HP, Oct 2024</p></div>
+          <div class="card"><h3>IELTS</h3><p>Valid through Aug 2026</p></div>
+        </div>
+      </div>
+    </section>
 
-  <!-- Certifications -->
-  <section id="certifications">
-    <h2>Certifications</h2>
-    <div class="grid">
-      <div class="card"><h3>AI Skills</h3><p>Accenture / FutureLearn, Dec 2025</p></div>
-      <div class="card"><h3>Effective Leadership</h3><p>HP, Oct 2024</p></div>
-      <div class="card"><h3>IELTS</h3><p>Valid through Aug 2026</p></div>
-    </div>
-  </section>
+    <!-- Contact -->
+    <section class="slide">
+      <div class="slide-content">
+        <h2>Contact</h2>
+        <p>Email: <a href="mailto:ihamimahammed@gmail.com">ihamimahammed@gmail.com</a></p>
+        <p>Phone: <a href="tel:+8801879893489">+8801879893489</a></p>
+        <p>LinkedIn: <a href="https://linkedin.com/in/hamimahammed" target="_blank">linkedin.com/in/hamimahammed</a></p>
+      </div>
+    </section>
+  </div>
 
-  <!-- Contact -->
-  <section id="contact">
-    <h2>Contact</h2>
-    <p>Email: <a href="mailto:ihamimahammed@gmail.com">ihamimahammed@gmail.com</a></p>
-    <p>Phone: <a href="tel:+8801879893489">+8801879893489</a></p>
-    <p>LinkedIn: <a href="https://linkedin.com/in/hamimahammed" target="_blank">linkedin.com/in/hamimahammed</a></p>
-  </section>
+  <!-- Navigation dots -->
+  <div class="nav" id="nav"></div>
 
   <script>
     // Typing effect
@@ -170,4 +159,22 @@
     const words = ["Hamim Ahammed","Business Student","Content Strategist","Future Leader"];
     let i=0,j=0,isDeleting=false;
     function type(){
-      typing.textContent
+      typing.textContent=words[i].substring(0,j);
+      if(!isDeleting && j<words[i].length){j++;setTimeout(type,150);}
+      else if(isDeleting && j>0){j--;setTimeout(type,100);}
+      else{isDeleting=!isDeleting;if(!isDeleting){i=(i+1)%words.length;}setTimeout(type,1000);}
+    }
+    type();
+
+    // Navigation dots
+    const slides=document.querySelectorAll('.slide');
+    const nav=document.getElementById('nav');
+    slides.forEach((_,idx)=>{
+      const dot=document.createElement('a');
+      dot.href=`#${idx}`;
+      dot.addEventListener('click',()=>slides[idx].scrollIntoView({behavior:'smooth'}));
+      nav.appendChild(dot);
+    });
+  </script>
+</body>
+</html>
