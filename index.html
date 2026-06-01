@@ -3,177 +3,103 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Hamim Ahammed | Portfolio</title>
+  <title>Background Remover</title>
   <style>
-    * {margin:0;padding:0;box-sizing:border-box;}
-    body {font-family:'Poppins',sans-serif;background:#f5f5f5;color:#333;overflow-x:hidden;}
-
-    /* Carousel Container */
-    .carousel {
-      display:flex;overflow-x:auto;scroll-snap-type:x mandatory;
-      height:100vh;scroll-behavior:smooth;
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', sans-serif;
+      background: linear-gradient(135deg, #1f1c2c, #928dab);
+      color: #fff;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      min-height: 100vh;
+      overflow-x: hidden;
     }
-    .slide {
-      flex:0 0 100%;scroll-snap-align:center;
-      display:flex;justify-content:center;align-items:center;
-      position:relative;perspective:1200px;
-      background:linear-gradient(135deg,#ff6f61,#00c9ff,#92fe9d);
-      color:#fff;
+    h1 {
+      margin-top: 40px;
+      font-size: 2.5em;
+      animation: fadeInDown 1.5s ease;
     }
-    .slide-content {
-      text-align:center;transform-style:preserve-3d;
-      animation:fadeInUp 2s ease;
-      max-width:800px;padding:20px;
+    #upload {
+      margin: 20px;
+      padding: 12px;
+      border-radius: 8px;
+      background: #fff;
+      color: #333;
+      cursor: pointer;
+      transition: transform 0.3s;
     }
-    .slide h1, .slide h2 {text-shadow:0 0 20px rgba(0,0,0,0.5);}
-    .slide h1 {font-size:3rem;margin-bottom:20px;}
-    .slide h2 {font-size:2rem;margin-bottom:15px;}
-    .slide p {font-size:1.2rem;margin-bottom:20px;}
-
-    /* 3D Card Grid */
-    .grid {display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:25px;}
-    .card {
-      background:#fff;color:#333;border-radius:15px;padding:20px;
-      transition:transform 0.8s,box-shadow 0.8s;
-      transform-style:preserve-3d;
+    #upload:hover {
+      transform: scale(1.05);
     }
-    .card:hover {
-      transform:rotateY(15deg) rotateX(5deg) translateY(-10px);
-      box-shadow:0 20px 40px rgba(0,0,0,0.3);
+    canvas {
+      margin: 20px;
+      border: 3px solid #fff;
+      border-radius: 12px;
+      box-shadow: 0 0 20px rgba(255,255,255,0.3);
+      max-width: 90%;
     }
-    .card h3 {color:#ff6f61;margin-bottom:10px;}
-
-    /* Animations */
-    @keyframes fadeInUp {
-      from {opacity:0;transform:translateY(40px);}
-      to {opacity:1;transform:translateY(0);}
+    #download {
+      padding: 12px 24px;
+      border: none;
+      border-radius: 8px;
+      background: #ff6f61;
+      color: #fff;
+      font-size: 1em;
+      cursor: pointer;
+      transition: background 0.3s, transform 0.3s;
     }
-
-    /* Navigation */
-    .nav {
-      position:fixed;bottom:20px;left:50%;transform:translateX(-50%);
-      display:flex;gap:10px;z-index:10;
+    #download:hover {
+      background: #ff3b2e;
+      transform: translateY(-3px);
     }
-    .nav a {
-      width:15px;height:15px;border-radius:50%;
-      background:#333;opacity:0.5;transition:opacity 0.3s;
-    }
-    .nav a.active {opacity:1;background:#ff6f61;}
-    .nav a:hover {opacity:1;}
-    
-    @media(max-width:768px){
-      .slide h1{font-size:2rem;}
-      .slide h2{font-size:1.5rem;}
-      .slide p{font-size:1rem;}
+    @keyframes fadeInDown {
+      from { opacity: 0; transform: translateY(-30px); }
+      to { opacity: 1; transform: translateY(0); }
     }
   </style>
 </head>
 <body>
-  <div class="carousel">
-    <!-- Hero -->
-    <section class="slide">
-      <div class="slide-content">
-        <h1 id="typing"></h1>
-        <p>BBA Student | Content Strategist | Future Leader</p>
-      </div>
-    </section>
-
-    <!-- About -->
-    <section class="slide">
-      <div class="slide-content">
-        <h2>About Me</h2>
-        <p>I am a BBA student at Khulna University. I helped organize major club events, served as a campus ambassador, and placed 1st Runners‑Up in a national content writing festival.</p>
-      </div>
-    </section>
-
-    <!-- Experience -->
-    <section class="slide">
-      <div class="slide-content">
-        <h2>Experience</h2>
-        <div class="grid">
-          <div class="card">
-            <h3>Executive Board Member | KUBC</h3>
-            <p>Organized bKash financial awareness (140+ students) and Career Pathways session (50 participants).</p>
-          </div>
-          <div class="card">
-            <h3>Campus Ambassador | Showcase 1.0</h3>
-            <p>Represented Khulna University at Army IBA Sylhet. Coordinated communication between organizers and participants.</p>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- Achievements -->
-    <section class="slide">
-      <div class="slide-content">
-        <h2>Achievements</h2>
-        <div class="grid">
-          <div class="card"><h3>1st Runners‑Up</h3><p>Content Writing | IGNITION 2026, KUET</p></div>
-          <div class="card"><h3>National Award</h3><p>Storytelling | UNESCO & UGC Bangladesh, 2025</p></div>
-        </div>
-      </div>
-    </section>
-
-    <!-- Skills -->
-    <section class="slide">
-      <div class="slide-content">
-        <h2>Skills</h2>
-        <div class="grid">
-          <div class="card"><h3>Communication</h3><p>English & Bangla; IELTS certified</p></div>
-          <div class="card"><h3>Leadership</h3><p>Event planning, campus outreach</p></div>
-          <div class="card"><h3>Content Writing</h3><p>Award‑winning competition writing</p></div>
-          <div class="card"><h3>Tools</h3><p>Microsoft Office Suite (Honors), Google Workspace</p></div>
-        </div>
-      </div>
-    </section>
-
-    <!-- Certifications -->
-    <section class="slide">
-      <div class="slide-content">
-        <h2>Certifications</h2>
-        <div class="grid">
-          <div class="card"><h3>AI Skills</h3><p>Accenture / FutureLearn, Dec 2025</p></div>
-          <div class="card"><h3>Effective Leadership</h3><p>HP, Oct 2024</p></div>
-          <div class="card"><h3>IELTS</h3><p>Valid through Aug 2026</p></div>
-        </div>
-      </div>
-    </section>
-
-    <!-- Contact -->
-    <section class="slide">
-      <div class="slide-content">
-        <h2>Contact</h2>
-        <p>Email: <a href="mailto:ihamimahammed@gmail.com">ihamimahammed@gmail.com</a></p>
-        <p>Phone: <a href="tel:+8801879893489">+8801879893489</a></p>
-        <p>LinkedIn: <a href="https://linkedin.com/in/hamimahammed" target="_blank">linkedin.com/in/hamimahammed</a></p>
-      </div>
-    </section>
-  </div>
-
-  <!-- Navigation dots -->
-  <div class="nav" id="nav"></div>
+  <h1>✨ Background Remover ✨</h1>
+  <input type="file" id="upload" accept="image/*">
+  <canvas id="canvas"></canvas>
+  <button id="download">Download PNG</button>
 
   <script>
-    // Typing effect
-    const typing = document.getElementById("typing");
-    const words = ["Hamim Ahammed","Business Student","Content Strategist","Future Leader"];
-    let i=0,j=0,isDeleting=false;
-    function type(){
-      typing.textContent=words[i].substring(0,j);
-      if(!isDeleting && j<words[i].length){j++;setTimeout(type,150);}
-      else if(isDeleting && j>0){j--;setTimeout(type,100);}
-      else{isDeleting=!isDeleting;if(!isDeleting){i=(i+1)%words.length;}setTimeout(type,1000);}
-    }
-    type();
+    const upload = document.getElementById('upload');
+    const canvas = document.getElementById('canvas');
+    const ctx = canvas.getContext('2d');
+    const downloadBtn = document.getElementById('download');
 
-    // Navigation dots
-    const slides=document.querySelectorAll('.slide');
-    const nav=document.getElementById('nav');
-    slides.forEach((_,idx)=>{
-      const dot=document.createElement('a');
-      dot.href=`#${idx}`;
-      dot.addEventListener('click',()=>slides[idx].scrollIntoView({behavior:'smooth'}));
-      nav.appendChild(dot);
+    upload.addEventListener('change', (e) => {
+      const file = e.target.files[0];
+      const reader = new FileReader();
+      reader.onload = function(event) {
+        const img = new Image();
+        img.onload = function() {
+          canvas.width = img.width;
+          canvas.height = img.height;
+          ctx.drawImage(img, 0, 0);
+          // Simple background removal: make white pixels transparent
+          const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+          for (let i = 0; i < imageData.data.length; i += 4) {
+            if (imageData.data[i] > 240 && imageData.data[i+1] > 240 && imageData.data[i+2] > 240) {
+              imageData.data[i+3] = 0;
+            }
+          }
+          ctx.putImageData(imageData, 0, 0);
+        };
+        img.src = event.target.result;
+      };
+      reader.readAsDataURL(file);
+    });
+
+    downloadBtn.addEventListener('click', () => {
+      const link = document.createElement('a');
+      link.download = 'background-removed.png';
+      link.href = canvas.toDataURL();
+      link.click();
     });
   </script>
 </body>
